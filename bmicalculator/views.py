@@ -1,45 +1,64 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import BMICalculator
 from .forms import BMICalculatorForm
+from groq import Groq
+import os
+
+api_key = os.getenv("GROQ_API_KEY")
+
+# Initialize Groq client with the API key
+client = Groq(api_key=api_key)
 
 
 def Bmi(request):
-    bmi = None  # Initialize BMI to None
+    bmi = None
+    bmi_category = None
+
     if request.method == "POST":
         form = BMICalculatorForm(request.POST)
         if form.is_valid():
-            bmi_instance = form.save()  # Save the form data
-            bmi = bmi_instance.bmi  # Get the calculated BMI
+            bmi_instance = form.save()
+            bmi = bmi_instance.bmi
+            gender = request.POST.get("gender")
+            print("gender", gender)
+
+            if bmi < 18.5:
+                bmi_category = "Underweight"
+            elif 18.5 <= bmi < 25:
+                bmi_category = "Healthy"
+            elif 25 <= bmi < 30:
+                bmi_category = "Overweight"
+            else:
+                bmi_category = "Obese"
     else:
         form = BMICalculatorForm()
 
-    # Render the template with both form and BMI result
-    return render(request, "bmi-calculator.html", {"form": form, "bmi": bmi})
+    return render(
+        request,
+        "bmi-calculator.html",
+        {"form": form, "bmi": bmi, "bmi_category": bmi_category, "gender": gender},
+    )
 
 
-# List all BMI records
-def bmi_list(request):
-    bmi_list = BMICalculator.objects.all()
-    return render(request, "bmi_list.html", {"bmi_list": bmi_list})
-
-
-# Update an existing BMI record
-def bmi_update(request, pk):
-    bmi_record = get_object_or_404(BMICalculator, pk=pk)
+def get_advice(request):
     if request.method == "POST":
-        form = BMICalculatorForm(request.POST, instance=bmi_record)
-        if form.is_valid():
-            form.save()
-            return redirect("bmi_list")  # Redirect to list after updating
-    else:
-        form = BMICalculatorForm(instance=bmi_record)
-    return render(request, "bmi_update.html", {"form": form, "bmi_record": bmi_record})
+        bmi = request.POST.get("bmi")
+        gender = request.POST.get("gender")
+        print(f"Gender: {gender}")
+        if gender == "M":
+            prompt = f"give me just i want short information about the best diet plan recommendation for {bmi} BMI in 3 line (give me how many calories i should eat for man with exercies)"
+        else:
+            prompt = f"give me just i want short information about the best diet plan recommendation for {bmi} BMI in 3 line (give me how many calories i should eat for woman with exercies)"
 
+        chat_completion = client.chat.completions.create(
+            messages=[{"role": "user", "content": prompt}],
+            model="llama3-8b-8192",
+        )
+        advice = chat_completion.choices[0].message.content
 
-# Delete a BMI record
-def bmi_delete(request, pk):
-    bmi_record = get_object_or_404(BMICalculator, pk=pk)
-    if request.method == "POST":
-        bmi_record.delete()
-        return redirect("bmi_list")
-    return render(request, "bmi_delete.html", {"bmi_record": bmi_record})
+        form = BMICalculatorForm(request.POST)
+        return render(
+            request, "bmi-calculator.html", {"form": form, "bmi": bmi, "advice": advice}
+        )
+
+    return redirect("bmi_calculator")

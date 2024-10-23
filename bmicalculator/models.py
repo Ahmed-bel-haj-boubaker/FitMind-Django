@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 
 
 def calculate_bmi(weight, height):
-    # Convert height from cm to meters
+
     height_meters = height / 100
     return round(weight / (height_meters**2), 2)
 
@@ -26,7 +26,6 @@ class BMICalculator(models.Model):
         if self.weight <= 0:
             raise ValidationError("Weight must be greater than 0.")
 
-        # Calculate the BMI before saving
         self.bmi = calculate_bmi(self.weight, self.height)
         super().save(*args, **kwargs)
 

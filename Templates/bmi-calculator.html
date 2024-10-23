@@ -59,17 +59,40 @@
               {% if bmi %}
               <tr>
                 <td class="point">{{ bmi }}</td>
-                <td>
-                  {% if bmi < 18.5 %} Underweight
-                   {% elif bmi >= 18.5 and bmi < 25 %} Healthy 
-                   {% elif bmi >= 25 and bmi < 30 %} Overweight
-                    {%else %} Obese
-                   {% endif %}
-                </td>
+                <td>{{ bmi_category }}</td>
               </tr>
               {% endif %}
             </tbody>
           </table>
+          <br />
+
+          <form method="POST" action="{% url 'get_advice' %}">
+            {% csrf_token %}
+            <input type="hidden" name="bmi" value="{{ bmi }}" />
+            <input type="hidden" name="gender" value="{{ gender }}" />
+            <button
+              type="submit"
+              class="btn btn-primary"
+              style="display: flex; align-items: center; gap: 10px"
+            >
+              <img
+                height="20px"
+                src="{% static 'img/aiStar.png' %}"
+                alt="AI Icon"
+                style="vertical-align: middle"
+              />
+              <span>Get Advice from AI</span>
+            </button>
+          </form>
+          <br />
+          {% if advice %}
+          <div class="ai-advice">
+            <h3 style="color: white">AI Diet & Exercise Advice:</h3>
+            <br />
+
+            <p>{{ advice }}</p>
+          </div>
+          {% endif %}
         </div>
       </div>
       <div class="col-lg-6">
@@ -82,8 +105,9 @@
             Calculate your Body Mass Index (BMI) by entering your weight and
             height below:
           </p>
-          <form method="POST">
+          <form method="POST" action="{% url 'bmi-calculator' %}">
             {% csrf_token %} {{ form.as_p }}
+
             <div class="row">
               <div class="col-lg-12">
                 <button type="submit">Calculate</button>
