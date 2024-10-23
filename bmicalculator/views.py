@@ -13,7 +13,7 @@ client = Groq(api_key=api_key)
 def Bmi(request):
     bmi = None
     bmi_category = None
-
+    gender = None
     if request.method == "POST":
         form = BMICalculatorForm(request.POST)
         if form.is_valid():
@@ -44,7 +44,8 @@ def get_advice(request):
     if request.method == "POST":
         bmi = request.POST.get("bmi")
         gender = request.POST.get("gender")
-        print(f"Gender: {gender}")
+        bmi_category = request.POST.get("bmi_category")
+
         if gender == "M":
             prompt = f"give me just i want short information about the best diet plan recommendation for {bmi} BMI in 3 line (give me how many calories i should eat for man with exercies)"
         else:
@@ -58,7 +59,14 @@ def get_advice(request):
 
         form = BMICalculatorForm(request.POST)
         return render(
-            request, "bmi-calculator.html", {"form": form, "bmi": bmi, "advice": advice}
+            request,
+            "bmi-calculator.html",
+            {
+                "form": form,
+                "bmi": bmi,
+                "advice": advice,
+                "bmi_category": bmi_category,
+            },
         )
 
     return redirect("bmi_calculator")

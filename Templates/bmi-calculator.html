@@ -70,6 +70,12 @@
             {% csrf_token %}
             <input type="hidden" name="bmi" value="{{ bmi }}" />
             <input type="hidden" name="gender" value="{{ gender }}" />
+            <input
+              type="hidden"
+              name="bmi_category"
+              value="{{ bmi_category }}"
+            />
+
             <button
               type="submit"
               class="btn btn-primary"
