@@ -6,7 +6,6 @@ import os
 
 api_key = os.getenv("GROQ_API_KEY")
 
-# Initialize Groq client with the API key
 client = Groq(api_key=api_key)
 
 
