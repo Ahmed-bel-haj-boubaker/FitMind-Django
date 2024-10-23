@@ -47,9 +47,9 @@ def get_advice(request):
         bmi_category = request.POST.get("bmi_category")
 
         if gender == "M":
-            prompt = f"give me just i want short information about the best diet plan recommendation for {bmi} BMI in 3 line (give me how many calories i should eat for man with exercies)"
+            prompt = f"give me just i want short information about the best diet plan recommendation for {bmi} BMI in 3 line (give me how many calories i should eat for man ) and with example of exercies"
         else:
-            prompt = f"give me just i want short information about the best diet plan recommendation for {bmi} BMI in 3 line (give me how many calories i should eat for woman with exercies)"
+            prompt = f"give me just i want short information about the best diet plan recommendation for {bmi} BMI in 3 line (give me how many calories i should eat for woman ) and with example of  exercies"
 
         chat_completion = client.chat.completions.create(
             messages=[{"role": "user", "content": prompt}],
