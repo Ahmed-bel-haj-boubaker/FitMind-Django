@@ -79,19 +79,18 @@ def sujet_delete(request, pk):
 
 @login_required
 def replay_delete(request, pk):
-    # Récupérer le sujet par son ID
+    
     replay = get_object_or_404(ReplaySujet, pk=pk)
-    sujet = get_object_or_404(Sujet, pk=pk)
 
-    # Vérification : L'utilisateur connecté est le créateur du sujet
+    # Vérifier si l'utilisateur connecté est bien l'auteur du replay
     if replay.user != request.user:
-        return JsonResponse({'success': False, 'message': 'Unauthorized'}, status=403)
+        return redirect('forum_replay', pk=replay.sujet.pk)
 
-    # Supprimer le sujet
+    # Supprimer le replay
     replay.delete()
 
-    # Retourner une réponse JSON pour indiquer que la suppression a été effectuée
-    return redirect('forum_replay', pk=sujet.pk)
+    # Rediriger vers le détail du sujet après suppression du replay
+    return redirect('forum_replay', pk=replay.sujet.pk)
 
 @login_required
 def replay_edit(request, pk):
