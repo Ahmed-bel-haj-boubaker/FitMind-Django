@@ -1,0 +1,17 @@
+{% include "header.html" %}
+<section class="choseus-section spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1>Delete Subject</h1>
+                <p>Are you sure you want to delete the subject "{{ sujet.titre }}"?</p>
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                    <a href="{% url 'forum_home' %}" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% include "footer.html" %}

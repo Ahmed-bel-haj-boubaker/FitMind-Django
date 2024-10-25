@@ -25,6 +25,8 @@ SECRET_KEY = "django-insecure-q2*6n0+rx)v+fr(aj(0!4yqx5%q^3i5%4a)mre1ana8ca0xr8$
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 ALLOWED_HOSTS = []
 
@@ -39,6 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "test",
+    "forum",
     "AuthApp",
 
 ]
