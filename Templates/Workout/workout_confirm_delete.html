@@ -1,0 +1,15 @@
+{% include "header.html" %}
+{% load static %}
+
+<section class="choseus-section spad">
+
+{% block content %}
+<h2>Confirm deletion of{{ workout.name }}</h2>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Delete</button>
+    <a href="{% url 'workout_list' %}">Cancel</a>
+</form>
+{% endblock content %}
+</section>
+{% include "footer.html" %}

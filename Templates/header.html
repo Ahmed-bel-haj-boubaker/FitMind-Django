@@ -57,6 +57,28 @@
                 <li class="{% if request.path == '/forum/' %}active{% endif %}">
                   <a href="{% url 'forum_home' %}">Forum</a>
                 </li>
+                {% if user.is_authenticated %}
+                <li class="{% if request.path == '/workouts/' or request.path == '/dashboard/' or request.path == '/exercises/' %}active{% endif %}">
+                    <a href="#">Workouts</a>
+                    <ul class="dropdown">
+                        <li class="{% if request.path == '/workouts/' %}active{% endif %}">
+                            <a href="{% url 'workout_list' %}">Workouts List</a>
+                        </li>
+                      
+                        <li class="{% if request.path == '/dashboard/' %}active{% endif %}">
+                            <a href="{% url 'dashboard' %}">Progress</a>
+                        </li>
+                        <li class="{% if request.path == '/exercises/' %}active{% endif %}">
+                            <a href="{% url 'exercise_list' %}">Exercises</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="{% if request.path == '/nutrition/' %}active{% endif %}">
+                  <a href="{% url 'analyze_nutrition' %}">Recipes</a>
+              </li>
+            {% endif %}
+            
+            
               </ul>
             </nav>
           </div>

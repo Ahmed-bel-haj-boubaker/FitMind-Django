@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Search</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2>Food and Recipe Search</h2>
+    
+    <form method="post" class="mb-3">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="keywords">Keywords:</label>
+            <input type="text" class="form-control" id="keywords" name="keywords" placeholder="Type one or more keywords">
+        </div>
+        <button type="submit" class="btn btn-success">SEARCH</button>
+    </form>
+
+    {% if results %}
+        <h3>Search Results:</h3>
+        <ul class="list-group">
+            {% for item in results %}
+                <li class="list-group-item">{{ item.name }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+
+</body>
+</html>
