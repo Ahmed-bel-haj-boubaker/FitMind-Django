@@ -26,6 +26,7 @@ urlpatterns = [
     #path("", include("test.urls")),
     path("", include('AuthApp.urls')),
     path('forum/', include('forum.urls')),
+    path('', include('Workout.urls')),
 
     ]
 if settings.DEBUG:  # Assure que cela ne fonctionne qu'en mode DEBUG
