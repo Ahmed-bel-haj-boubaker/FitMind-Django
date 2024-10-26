@@ -1,0 +1,11 @@
+<h2>Your Active Notifications</h2>
+<ul>
+    {% for user_notification in active_user_notifications %}
+        <li>
+            <strong>{{ user_notification.notification.title }}</strong>: {{ user_notification.notification.message }}
+        </li>
+    {% empty %}
+        <li>No active notifications.</li>
+    {% endfor %}
+</ul>
+

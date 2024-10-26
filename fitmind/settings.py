@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "test",
     "AuthApp",
+    "Notification",
+    'background_task'
+
 
 ]
 
@@ -129,3 +132,6 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+OPENAI_API_KEY = "sk-4LRbpRdTarW6At4oBkNQj__WtOQXPUlUS5RIrovAqIT3BlbkFJylexvvPTFcQuoNz5mkE-9jdj-KwiD3vPQNnGQWWxgA"
+GEMINI_API_KEY = "AIzaSyAQzAT1U_Ob9LlK1lUaR135ksEWNOpnE-w"
