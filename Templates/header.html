@@ -134,7 +134,7 @@
                   class="{% if request.path == '/bmi-calculator/' %}active{% endif %}"
                 >
                   <a href="">BMI</a>
-                  <ul class="submenu">
+                  <ul class="dropdown">
                     <li>
                       <a href="{% url 'bmi-calculator' %}">BMI Calculator</a>
                     </li>
@@ -143,6 +143,36 @@
                     </li>
                   </ul>
                 </li>
+                {% if user.is_authenticated %}
+                <li
+                  class="{% if request.path == '/workouts/' or request.path == '/dashboard/' or request.path == '/exercises/' %}active{% endif %}"
+                >
+                  <a href="#">Workouts</a>
+                  <ul class="dropdown">
+                    <li
+                      class="{% if request.path == '/workouts/' %}active{% endif %}"
+                    >
+                      <a href="{% url 'workout_list' %}">Workouts List</a>
+                    </li>
+
+                    <li
+                      class="{% if request.path == '/dashboard/' %}active{% endif %}"
+                    >
+                      <a href="{% url 'dashboard' %}">Progress</a>
+                    </li>
+                    <li
+                      class="{% if request.path == '/exercises/' %}active{% endif %}"
+                    >
+                      <a href="{% url 'exercise_list' %}">Exercises</a>
+                    </li>
+                  </ul>
+                </li>
+                <li
+                  class="{% if request.path == '/nutrition/' %}active{% endif %}"
+                >
+                  <a href="{% url 'analyze_nutrition' %}">Recipes</a>
+                </li>
+                {% endif %}
               </ul>
             </nav>
           </div>
@@ -153,7 +183,7 @@
                 <i class="fa fa-search"></i>
               </div>
               <div class="to-social">
-                {% if not request.user.is_authenticated %}
+                🙋🏻‍♀️ {% if not request.user.is_authenticated %}
                 <a class="btn-getstarted" href="/signup">Sign in</a>
                 {% else %}
                 <a class="btn-getstarted" href="/logout">Logout</a>

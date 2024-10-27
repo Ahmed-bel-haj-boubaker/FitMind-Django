@@ -1,0 +1,91 @@
+{% include "header.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/styleforum.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/responsive.css' %}" type="text/css" />
+{% endblock %}
+
+<section class="choseus-section spad">
+    {% block content %}
+    <section class="vine-main">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-9">
+                    <h4 class="mb-0" data-aos="fade-down" data-aos-easing="linear" 
+                        style="color: blanchedalmond; margin-left: 114px;">
+                        📝 Edit Post
+                    </h4>
+
+                    <div class="row g-0">
+                        <div class="col-12 col-lg-16">
+                            <div class="dashboard-card" style="background-color: #434242; margin-left: 114px; margin-right: -195px;">
+                                <div class="dashboard-body">
+                                    <form method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        
+                                        <div class="row g-3">
+                                            <!-- Champ Titre -->
+                                            <div class="col-sm-12" data-aos="fade-up" data-aos-easing="linear">
+                                                <label class="form-label" style="color: white;">Title</label>
+                                                <input type="text" name="titre" value="{{ form.instance.titre }}" 
+                                                       placeholder="Title" style="background-color: #0d0d0d; color: white;" required>
+                                            </div>
+                                            <div class="col-sm-12" data-aos="fade-up" data-aos-easing="linear">
+                                                <label class="form-label" style="color: white;">Status</label>
+                                                <select name="statut" class="form-control" style="background-color: #0d0d0d; color: white;">
+                                                    <option value="non_resolu" {% if form.instance.statut == 'non_resolu' %}selected{% endif %}>Non Résolu</option>
+                                                    <option value="resolu" {% if form.instance.statut == 'resolu' %}selected{% endif %}>Résolu</option>
+                                                </select>
+                                            </div>
+                                            <!-- Champ Image -->
+                                            <div class="col-sm-12" data-aos="fade-up" data-aos-easing="linear">
+                                                <label class="form-label" style="color: white;">Image</label>
+                                                <div class="upload-image my-3" style="border: 2px dotted;">
+                                                    <p class="mb-2">PNG, JPG, GIF, WEBP or MP4. Max 200mb.</p>
+                                                    <input type="file" name="image" class="form-control" 
+                                                           style="background-color: #0d0d0d;">
+                                                    {% if form.instance.image %}
+                                                        <img src="{{ form.instance.image.url }}" alt="Current Image" 
+                                                             style="max-width: 100%; height: auto; margin-top: 10px;">
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+
+                                            <!-- Champ Description -->
+                                            <div class="col-sm-12" data-aos="fade-up" data-aos-easing="linear">
+                                                <label class="form-label" style="color: white;">Description</label>
+                                                <textarea name="description" rows="5" class="form-custom form-custom-textarea" 
+                                                          style="background-color: #0d0d0d; color: white;" required>{{ form.instance.description }}</textarea>
+                                            </div>
+
+                                            <!-- Champ Statut -->
+                                            
+                                        </div>
+
+                                        <div class="d-flex pt-5" data-aos="fade-up" data-aos-easing="linear">
+                                            <button type="submit" class="btn btn-mint me-3" style="margin-left: 723px;">
+                                                Save Changes
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div><!--/dashboard-card-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endblock content %}
+</section>
+
+{% include "footer.html" %}
+{% block extra_script %}
+<script src="{% static 'vendors/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'vendors/bootstrap/bootstrap.bundle.js' %}"></script>
+<script src="{% static 'vendors/popper/popper.min.js' %}"></script>
+<script src="{% static 'vendors/simplebar/simplebar.min.js' %}"></script>
+<script src="{% static 'vendors/aos/aos.js' %}"></script>
+<script src="{% static 'js/mains.js' %}"></script>
+{% endblock %}

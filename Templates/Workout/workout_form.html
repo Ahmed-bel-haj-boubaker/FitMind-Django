@@ -1,0 +1,162 @@
+{% include "header.html" %}
+{% load static %}
+{% load form_tags %}
+
+<section class="choseus-section spad">
+
+{% block content %}
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="{% static 'img/breadcrumb-bg.jpg' %}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb-text">
+                    <h2>{% if object %}Edit Workout{% else %}Add Workout{% endif %}</h2>
+                    <div class="bt-option">
+                        <a href="{% url 'home' %}">Home</a>
+                        <span>{% if object %}Edit Workout{% else %}Add Workout{% endif %}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<!-- Workout Form Section Begin -->
+<section class="workout-form-section spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="section-title chart-title">
+                    <span>Manage Workouts</span>
+                    <h2>{% if object %}Edit Workout{% else %}ADD New Workout{% endif %}</h2>
+                </div>
+                <div class="leave-comment">
+                <!-- Formulaire Workout -->
+                {% comment %} <form method="post" enctype="multipart/form-data">
+
+                    {% csrf_token %}
+                    {{ form.as_p }}
+
+                    <button type="submit" class="btn btn-primary">{% if object %}Update{% else %}ADD{% endif %}</button>
+
+                </form>  {% endcomment %}
+
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                
+                    <div class="form-group">
+                        <label style="color: white;" for="id_name">Workout Name</label>
+                        {{ form.name|add_class:"form-control" }}
+                        {% if form.name.errors %}
+                            <div class="text-danger">{{ form.name.errors }}</div>
+                        {% endif %}
+                    </div>
+                
+                    <div class="form-group">
+                        <label style="color: white;" for="id_description">Description</label>
+                        {{ form.description|add_class:"form-control" }}
+                        {% if form.description.errors %}
+                            <div class="text-danger">{{ form.description.errors }}</div>
+                        {% endif %}
+                    </div>
+                
+                    <div class="form-group">
+                        <label style="color: white;">Exercises</label>
+                        <div class="exercise-checkboxes">
+                            {% for exercise in form.exercises %}
+                                <div class="form-check" style="color: white;">
+                                    {{ exercise.tag }} {{ exercise.choice_label }}
+                                </div>
+                            {% endfor %}
+                            {% if form.exercises.errors %}
+                                <div class="text-danger">{{ form.exercises.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                
+                    <div class="form-group" style="color: white;">
+                        <label style="color: white;" for="id_image">Image</label>
+                        {{ form.image|add_class:"form-control" }}
+                        {% if form.image.errors %}
+                            <div class="text-danger">{{ form.image.errors }}</div>
+                        {% endif %}
+                    </div>
+                
+                    <div class="form-group">
+                        <label style="color: white;" for="id_level">Level</label>
+                        {{ form.level|add_class:"form-control" }}
+                        {% if form.level.errors %}
+                            <div class="text-danger">{{ form.level.errors }}</div>
+                        {% endif %}
+                    </div>
+                
+                    <button type="submit" class="btn btn-primary">{% if object %}Update{% else %}ADD{% endif %}</button>
+                </form>
+                {% comment %} <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.non_field_errors }}
+                
+                    <div class="form-group">
+                        <label  style="color: white;" for="id_name">Workout Name</label>
+                        {{ form.name }}
+                        {{ form.name.errors }}
+                    </div>
+                
+                    <div class="form-group">
+                        <label  style="color: white;" for="id_description">Description</label>
+                        {{ form.description }}
+                        {{ form.description.errors }}
+                    </div>
+                
+                    <div class="form-group">
+                        <label  style="color: white;">Exercises</label>
+                        <div class="exercise-checkboxes">
+                            {% for exercise in form.exercises %}
+                                <span class="exercise-item" style="display:inline-block; margin-right: 15px;">
+                                    <label  style="color: white;">
+                                        <input type="checkbox" name="exercises" value="{{ exercise.choice_value }}">
+                                        {{ exercise.choice_label }}
+                                    </label>
+                                </span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                
+                    <div class="form-group">
+                        <label  style="color: white;" for="id_image">Image</label>
+                        {{ form.image }}
+                        {{ form.image.errors }}
+                    </div>
+                
+                    <div class="form-group">
+                        <label  style="color: white;" for="id_level">Level</label>
+                        {{ form.level }}
+                        {{ form.level.errors }}
+                    </div>
+                
+                    <button type="submit" class="btn btn-primary">Create Workout</button>
+                </form> {% endcomment %}
+                
+            </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="section-title chart-calculate-title">
+                    <span>Additional information</span>
+                    <h2>Details on adding Workout</h2>
+                </div>
+                <p>You can add or edit a workout, as well as associate it with existing exercises or create new ones.</p>
+                <p>Make sure to fill out all fields to create a complete workout.</p>
+                <!-- Bouton "Créer Exercice" -->
+                <a href="{% url 'create_exercise' %}" class="btn btn-success mb-3">Add Exercise</a>
+                <a href="{% url 'exercise_list' %}" class="btn btn-info mb-3">View the list of Exercises</a>
+
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Workout Form Section End -->
+{% endblock content %}
+</section>
+{% include "footer.html" %}
