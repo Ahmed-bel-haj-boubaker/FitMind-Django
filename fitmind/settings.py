@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "AuthApp",
     "bmicalculator",
     "Workout",
+    "recognition",
 ]
 
 MIDDLEWARE = [

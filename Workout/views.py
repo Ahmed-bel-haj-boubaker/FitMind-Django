@@ -217,7 +217,7 @@ def todo_list(request):
 @login_required
 def dashboard(request):
     # Utiliser l'IA pour prédire la performance
-    predicted_performance = predict_performance(request.user)
+    performance_data = predict_performance(request.user)
 
     # Récupérer les progrès passés
     past_progress = Progress.objects.filter(user=request.user)
@@ -226,10 +226,12 @@ def dashboard(request):
     recommended_workouts = recommend_workouts(request.user.id)
 
     return render(request, 'dashboard.html', {
-        'predicted_performance': predicted_performance,
+        'predicted_performance': performance_data['predicted_progress'],
+        'progress_percentage': performance_data['progress_percentage'],  # Pourcentage de progression
+        'expected_progress': performance_data['expected_progress'],  # Pourcentage de progression attendu
         'past_progress': past_progress,
-        'recommended_workouts': recommended_workouts,  # Ajouter les workouts recommandés au contexte
-    })    
+        'recommended_workouts': recommended_workouts,
+    })
 
     
 class DashboardView(TemplateView):
