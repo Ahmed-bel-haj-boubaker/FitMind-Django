@@ -8,4 +8,9 @@ urlpatterns = [
     path("bmi/<int:id>/", views.get_bmi_by_id, name="bmi_details"),
     path("bmi/update/<int:id>/", views.update_bmi, name="update_bmi"),
     path("bmi/delete/<int:id>/", views.delete_bmi, name="delete_bmi"),
+    path(
+        "nutrition-plan/<int:id>/",
+        views.generateNutritionPlan,
+        name="get_nutrition_plan",
+    ),
 ]
