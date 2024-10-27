@@ -1,0 +1,278 @@
+{% include "header.html" %} {% load static %} {% block content %}
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+<section
+  class="breadcrumb-section set-bg"
+  data-setbg="{% static 'img/breadcrumb-bg.jpg' %}"
+>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <div class="breadcrumb-text">
+          <h2>BMI DETAILS</h2>
+          <div class="bt-option">
+            <a href="./index.html">LIST BMI</a>
+            <span>BMI DETAILS</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="bmi-calculator-section spad">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="section-title text-center mb-4">
+          <span>Check Your Body</span>
+          <h2 style="color: black">BMI Information</h2>
+        </div>
+        <div class="info-box">
+          <ul class="list-unstyled">
+            <li><strong>BMI:</strong> {{ bmi_record.bmi }}</li>
+            <li><strong>Weight:</strong> {{ bmi_record.weight }} kg</li>
+            <li><strong>Height:</strong> {{ bmi_record.height }} cm</li>
+            <li><strong>Age:</strong> {{ bmi_record.age }} years</li>
+            <li><strong>Gender:</strong> {{ bmi_record.gender }}</li>
+            <li>
+              <strong>Category:</strong>
+              {{ bmi_category }}
+            </li>
+          </ul>
+        </div>
+        <div class="button-group text-center mt-4">
+          <a href="{% url 'list_bmi' %}" class="btn btn-primary"
+            >Back to List</a
+          >
+          <button
+            type="button"
+            class="btn btn-warning"
+            data-toggle="modal"
+            data-target="#adviceModal"
+            id="getAdviceButton"
+            data-bmi="{{ bmi_record.bmi }}"
+            data-gender="{{ bmi_record.gender }}"
+            data-bmi-category="{% if bmi_record.bmi < 18.5 %}Underweight{% elif 18.5 <= bmi_record.bmi < 25 %}Healthy{% elif 25 <= bmi_record.bmi < 30 %}Overweight{% else %}Obese{% endif %}"
+          >
+            <img
+              height="20px"
+              src="{% static 'img/aiStar.png' %}"
+              alt="AI Icon"
+              style="vertical-align: middle"
+            />
+            <span>Get Advice from AI</span>
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-toggle="modal"
+            data-target="#updateBMIModal"
+          >
+            Update BMI
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div
+  class="modal fade"
+  id="updateBMIModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="updateBMIModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateBMIModalLabel">Update BMI</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id="updateBMIForm" method="post" action="{% url 'update_bmi' bmi_record.id %}">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="weight">Weight (kg):</label>
+            <input
+              type="number"
+              class="form-control"
+              id="weight"
+              name="weight"
+              value="{{ bmi_record.weight }}"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="height">Height (cm):</label>
+            <input
+              type="number"
+              class="form-control"
+              id="height"
+              name="height"
+              value="{{ bmi_record.height }}"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="age">Age:</label>
+            <input
+              type="number"
+              class="form-control"
+              id="age"
+              name="age"
+              value="{{ bmi_record.age }}"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="gender">Gender:</label>
+            <select class="form-control" id="gender" name="gender" required>
+              <option value="M" {% if bmi_record.gender == "M" %}selected{% endif %}>Male</option>
+              <option value="F" {% if bmi_record.gender == "F" %}selected{% endif %}>Female</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">
+            Close
+          </button>
+          <button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="adviceModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="adviceModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="adviceModalLabel">
+          AI Diet & Exercise Advice
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>No advice available at this moment.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .breadcrumb-section {
+    color: #fff;
+    background-position: center;
+  }
+  .breadcrumb-text h2 {
+    font-size: 36px;
+    margin-bottom: 15px;
+    text-transform: uppercase; /* Uppercase for emphasis */
+  }
+  .bmi-calculator-section {
+    padding: 60px 0;
+    background-color: #f4f7fa; /* Light background for the section */
+  }
+  .info-box {
+    background-color: #ffffff; /* White background for contrast */
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    max-width: 700px; /* Slightly wider for better readability */
+  }
+  .info-box ul {
+    padding-left: 0;
+  }
+  .info-box li {
+    font-size: 18px;
+    margin-bottom: 15px; /* Increased space between items */
+    line-height: 1.5; /* Improved line height for readability */
+  }
+  .button-group .btn {
+    margin: 0 10px; /* Space between buttons */
+    padding: 12px 25px; /* Increased padding for better button size */
+    border-radius: 8px; /* Rounded corners for buttons */
+    font-size: 16px; /* Slightly larger font size */
+  }
+  .btn-primary {
+    background-color: #007bff;
+    border: none;
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+  }
+  .btn-primary:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+  .btn-warning {
+    background-color: #ffc107;
+    border: none;
+    transition: background-color 0.3s;
+  }
+  .btn-warning:hover {
+    background-color: #e0a800; /* Darker yellow on hover */
+  }
+</style>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $("#getAdviceButton").click(function () {
+    
+      var bmi = $(this).data("bmi");
+      var gender = $(this).data("gender");
+      var bmiCategory = $(this).data("bmi-category");
+
+       
+      $.ajax({
+        url: "{% url 'get_advice' %}",  
+        type: "POST",
+        data: {
+          bmi: bmi,
+          gender: gender,
+          bmi_category: bmiCategory,
+          csrfmiddlewaretoken: "{{ csrf_token }}",  
+        },
+        success: function (response) {
+          
+          $("#adviceModal .modal-body").html("<p>" + response.advice + "</p>");
+        },
+        error: function (xhr, status, error) {
+           
+          $("#adviceModal .modal-body").html(
+            "<p>An error occurred. Please try again later.</p>"
+          );
+        },
+      });
+    });
+  });
+</script>
+{% endblock content %} {% include "footer.html" %}

@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,6 +31,9 @@ DEBUG = True
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
 ALLOWED_HOSTS = []
 
 
@@ -43,8 +49,8 @@ INSTALLED_APPS = [
     "test",
     "forum",
     "AuthApp",
-    'Workout',
-
+    "bmicalculator",
+    "Workout",
 ]
 
 MIDDLEWARE = [
@@ -62,7 +68,7 @@ ROOT_URLCONF = "fitmind.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates","templates/Workout"],
+        "DIRS": [BASE_DIR / "templates", "templates/Workout"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
