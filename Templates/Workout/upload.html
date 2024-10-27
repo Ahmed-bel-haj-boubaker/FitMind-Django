@@ -1,0 +1,52 @@
+{% include "header.html" %}
+{% load static %}
+
+<section class="choseus-section spad">
+    {% block content %}
+    <section class="breadcrumb-section set-bg" data-setbg="{% static 'img/breadcrumb-bg.jpg' %}">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="breadcrumb-text">
+                        <h2>Upload Video for Pose Estimation</h2>
+                        <div class="bt-option">
+                            <a href="{% url 'home' %}">Home</a>
+                            <span>Upload Video</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="video-upload-form-section spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="section-title chart-title">
+                        <span>Upload Your Video</span>
+                        <h2>Pose Estimation</h2>
+                    </div>
+                    <div class="leave-comment">
+                        <!-- Video upload form -->
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input type="file" name="video" accept="video/*" required class="form-control">
+                            <button type="submit" class="btn btn-primary">Upload</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="section-title chart-calculate-title">
+                        <span>Additional Information</span>
+                        <h2>How to Upload</h2>
+                    </div>
+                    <p>To analyze your pose, please upload a video file of your exercise. Make sure the video is clear and properly captures your form.</p>
+                    <p>Once uploaded, we will process your video and provide feedback on your posture.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endblock content %}
+
+{% include "footer.html" %}
+

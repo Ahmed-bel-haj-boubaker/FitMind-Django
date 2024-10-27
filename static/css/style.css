@@ -109,6 +109,17 @@ ol {
 	margin: 0;
 }
 
+.exercise-checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px; /* Espace entre les checkboxes */
+}
+
+.form-check {
+    display: flex;
+    align-items: center;
+}
+
 /*---------------------
   Helper CSS
 -----------------------*/

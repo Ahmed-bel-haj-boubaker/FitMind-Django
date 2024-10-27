@@ -1,0 +1,64 @@
+{% include "header.html" %}
+{% load static %}
+
+<section class="choseus-section spad">
+
+{% block content %}
+<section class="nutrition-analysis-section spad" style="background-color: white;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title">
+                    <span>Nutrition Analysis</span>
+                    <h2>Résultats de l'analyse nutritionnelle</h2>
+                </div>
+
+                {% if nutrition_data %}
+                    <h2>{{ nutrition_data.calories|floatformat:2 }} Calories</h2>
+
+                    <!-- Détails pour chaque ingrédient -->
+                    <div class="chart-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Qty</th>
+                                    <th>Unit</th>
+                                    <th>Food</th>
+                                    <th>Calories</th>
+                                    <th>Weight</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Boucle sur les ingrédients -->
+                                {% for ingredient in nutrition_data.ingredients %}
+                                    {% for parsed_ingredient in ingredient.parsed %}
+                                    <tr>
+                                        <td>{{ parsed_ingredient.quantity|floatformat:2 }}</td>
+                                        <td>{{ parsed_ingredient.measure }}</td>
+                                        <td>{{ parsed_ingredient.food }}</td>
+                                        <td>{{ parsed_ingredient.nutrients.ENERC_KCAL.quantity|floatformat:2 }} kcal</td>
+                                        <td>{{ parsed_ingredient.weight|floatformat:2 }} g</td>
+                                    </tr>
+                                    {% endfor %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Autres informations nutritionnelles générales -->
+                    <div class="additional-info">
+                        <h3>Nutritional Information</h3>
+                        <ul>
+                            <li>FAT: {{ nutrition_data.totalNutrients.FAT.quantity|floatformat:2 }} {{ nutrition_data.totalNutrients.FAT.unit }}</li>
+                            <li>Proteins: {{ nutrition_data.totalNutrients.PROCNT.quantity|floatformat:2 }} {{ nutrition_data.totalNutrients.PROCNT.unit }}</li>
+                            <li>Carbohydrates: {{ nutrition_data.totalNutrients.CHOCDF.quantity|floatformat:2 }} {{ nutrition_data.totalNutrients.CHOCDF.unit }}</li>
+                        </ul>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
+</section>
+{% include "footer.html" %}

@@ -1,0 +1,27 @@
+{% include "header.html" %}
+
+{% load static %}
+
+<section class="choseus-section spad">
+
+{% block content %}
+<section class="choseus-section spad">
+
+    <div class="container">
+        <h2 style="color: white;">{{ exercise.name }}</h2><br/>
+        <p><strong style="color: orange;">Description:</strong> {{ exercise.description }}</p>
+        <p><strong style="color: orange;">Duration:</strong> {{ exercise.duration }}</p>
+        <p><strong style="color: orange;">Rehearsals:</strong> {{ exercise.repetitions }}</p>
+        <p><strong style="color: orange;">Calories burned:</strong> {{ exercise.calories_burned }}</p>
+        {% if exercise.image %}
+        <img src="{{ exercise.image.url }}" alt="{{ exercise.name }}" />
+    {% else %}
+        <p style="color: orange;">No image yet</p>
+    {% endif %}        
+        <a href="{% url 'exercise_list' %}" class="btn btn-primary mt-3">Back to the list of Exercises</a>
+    </div>
+</section>
+{% endblock content%}
+</section>
+
+{% include "footer.html" %}
