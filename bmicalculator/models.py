@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.contrib.auth.models import User
 
 
 def calculate_bmi(weight, height):
@@ -17,6 +18,7 @@ class BMICalculator(models.Model):
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     weight = models.FloatField(help_text="Weight in kilograms")
     height = models.FloatField(help_text="Height in cm")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
     bmi = models.FloatField(blank=True, null=True, editable=False)
 

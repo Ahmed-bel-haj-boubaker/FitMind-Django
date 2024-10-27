@@ -85,6 +85,43 @@
             </div>
           </div>
           <div class="col-lg-6">
+            <style>
+              .nav-menu {
+                position: relative;
+              }
+
+              .submenu {
+                display: none;
+                position: absolute;
+                background-color: black;
+                border: 1px solid #ccc;
+                list-style: none;
+                margin: 0;
+                z-index: 1000;
+                width: 200px;
+                border-radius: 5px;
+                left: 0;
+              }
+
+              .nav-menu li:hover .submenu {
+                display: block;
+              }
+
+              .submenu li {
+                margin: 0;
+              }
+
+              .submenu li a {
+                color: #ffffff;
+                padding: 10px;
+                display: block;
+                transition: background-color 0.3s ease;
+              }
+
+              .submenu li a:hover {
+                background-color: #555;
+              }
+            </style>
             <nav class="nav-menu">
               <ul>
                 <li class="{% if request.path == '/' %}active{% endif %}">
@@ -96,11 +133,20 @@
                 <li
                   class="{% if request.path == '/bmi-calculator/' %}active{% endif %}"
                 >
-                  <a href="{% url 'bmi-calculator' %}">Bmi Calculator</a>
+                  <a href="">BMI</a>
+                  <ul class="submenu">
+                    <li>
+                      <a href="{% url 'bmi-calculator' %}">BMI Calculator</a>
+                    </li>
+                    <li>
+                      <a href="{% url 'list_bmi' %}">List Of my BMI</a>
+                    </li>
+                  </ul>
                 </li>
               </ul>
             </nav>
           </div>
+
           <div class="col-lg-3">
             <div class="top-option">
               <div class="to-search search-switch">
