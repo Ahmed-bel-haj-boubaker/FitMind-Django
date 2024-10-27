@@ -58,6 +58,8 @@
                         color: blanchedalmond;">
                         {{sujet.description}}
                     </p>
+                    <h3>Résumé Automatique :</h3>
+                    <p>{{ summary }}</p>
 
 
                 </div>
@@ -66,15 +68,15 @@
 
                     <div class="post-stats">
                         <div class="post-item">
-                            <a href="#">
+                            <a href="{% url 'like_sujet' sujet.pk %}">
                                 <div class="post-icon">👍</div>
-                                <div class="post-text">70</div>
+                                <div class="post-text">({{ like_count }})</div>
                             </a>
                         </div>
                         <div class="post-item">
-                            <a href="#">
+                            <a href="{% url 'dislike_sujet' sujet.pk %}">
                                 <div class="post-icon">👎</div>
-                                <div class="post-text">24</div>
+                                <div class="post-text"> ({{ dislike_count  }})</div>
                             </a>
                         </div>
 
@@ -97,6 +99,8 @@
                             </div>
                             <div class="d-flex justify-content-between align-items-center">
                                 <p class="mb-0 flex-grow-1">{{ replay.message }}</p>
+                                <span class="text-muted">{{ replay.sentiment_emoji}}</span>
+
                                 <div class="action-icons d-flex">
                                     <a href="{% url 'replay_edit' replay.id %}" class="text-danger me-2">📝</a>
                                     <a href="{% url 'replay_delete' replay.id %}" class="text-danger"  onclick="return confirmDeletion();">❌</a>
