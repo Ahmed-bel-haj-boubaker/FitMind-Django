@@ -22,13 +22,12 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-    path("admin/", admin.site.urls), 
-    #path("", include("test.urls")),
-    path("", include('AuthApp.urls')),
-    path('forum/', include('forum.urls')),
-    path('', include('Workout.urls')),
-
-    ]
+    path("admin/", admin.site.urls),
+    path("", include("AuthApp.urls")),
+    path("forum/", include("forum.urls")),
+    path("", include("Workout.urls")),
+    path("bmi-calculator/", include("bmicalculator.urls")),
+]
 if settings.DEBUG:  # Assure que cela ne fonctionne qu'en mode DEBUG
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
