@@ -25,6 +25,8 @@ SECRET_KEY = "django-insecure-q2*6n0+rx)v+fr(aj(0!4yqx5%q^3i5%4a)mre1ana8ca0xr8$
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 ALLOWED_HOSTS = []
 
@@ -39,7 +41,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "test",
+    "forum",
     "AuthApp",
+    'Workout',
 
 ]
 
@@ -58,7 +62,7 @@ ROOT_URLCONF = "fitmind.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],
+        "DIRS": [BASE_DIR / "templates","templates/Workout"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -124,6 +128,7 @@ STATIC_URL = "static/"
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

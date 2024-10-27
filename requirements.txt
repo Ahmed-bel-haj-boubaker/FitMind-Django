@@ -1,0 +1,6 @@
+python-dotenv
+requests
+replicate
+Pillow
+pandas
+scikit-learn
