@@ -63,7 +63,29 @@
             />
             <span>Get Advice from AI</span>
           </button>
-
+          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#nutritionPlanModal" data-id="{{ bmi_record.id }}">
+            Generate Nutrition Plan
+        </button>
+        
+        <!-- Nutrition Plan Modal -->
+        <div class="modal fade" id="nutritionPlanModal" tabindex="-1" role="dialog" aria-labelledby="nutritionPlanModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="nutritionPlanModalLabel">Nutrition Plan</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="nutritionPlanContent">
+                        <p>Your personalized nutrition plan will appear here.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
           <button
             type="button"
             class="btn btn-secondary"
@@ -72,11 +94,14 @@
           >
             Update BMI
           </button>
+ 
         </div>
       </div>
     </div>
   </div>
 </section>
+
+ 
 <div
   class="modal fade"
   id="updateBMIModal"
@@ -242,7 +267,11 @@
   }
 </style>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
 <script>
   $(document).ready(function () {
     $("#getAdviceButton").click(function () {
@@ -274,5 +303,33 @@
       });
     });
   });
+
+  $(document).ready(function() {
+    $('#nutritionPlanModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var bmiId = button.data('id'); // Extract info from data-* attributes
+         console.log(bmiId)
+        // Use AJAX to fetch the nutrition plan
+        $.ajax({
+            type: 'POST',
+            url: '{% url "get_nutrition_plan" 0 %}'.replace('0', bmiId), // Update the URL here
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}', // CSRF token
+            },
+            success: function(response) {
+                // Update the modal body with the response data
+                $('#nutritionPlanContent').html(`
+                    <strong>BMI Value:</strong> ${response.bmi_value}<br>
+                    <strong>Nutrition Plan:</strong> <br>${response.nutrition_plan}
+                   
+                `);
+            },
+            error: function(xhr) {
+                // Handle error case
+                $('#nutritionPlanContent').html('<p>Error fetching nutrition plan. Please try again.</p>');
+            }
+        });
+    });
+});
 </script>
 {% endblock content %} {% include "footer.html" %}

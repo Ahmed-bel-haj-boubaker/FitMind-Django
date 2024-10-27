@@ -1,6 +1,8 @@
+import re
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import BMICalculator
+import requests
+from .models import BMICalculator, NutritionPlan
 from .forms import BMICalculatorForm
 from groq import Groq
 import os
@@ -201,3 +203,66 @@ def delete_bmi(request, id):
         return redirect("list_bmi")
 
     return redirect("list_bmi")
+
+
+def generateNutritionPlan(request, id):
+    if request.method == "POST":
+        try:
+            # Retrieve the BMI record by ID
+            bmi_record = BMICalculator.objects.get(id=id)
+            height = bmi_record.height
+            weight = bmi_record.weight
+            age = bmi_record.age
+            gender = bmi_record.gender
+            bmi_value = bmi_record.bmi
+
+            # Set the prompt based on gender
+            if gender == "M":
+                prompt = (
+                    f"Create a personalized nutrition plan for a male with a BMI of {bmi_value}, "
+                    f"height {height} cm, weight {weight} kg, and age {age}. "
+                    f"Include daily calorie needs, macronutrient distribution, and example meals."
+                )
+            else:
+                prompt = (
+                    f"Create a personalized nutrition plan for a female with a BMI of {bmi_value}, "
+                    f"height {height} cm, weight {weight} kg, and age {age}. "
+                    f"Include daily calorie needs, macronutrient distribution, and example meals."
+                )
+
+            # Call the AI model to generate a response based on the prompt
+            chat_completion = client.chat.completions.create(
+                messages=[{"role": "user", "content": prompt}],
+                model="llama3-8b-8192",
+            )
+            nutrition_plan_text = chat_completion.choices[0].message.content
+
+            # Create or update the NutritionPlan instance and save it
+            nutrition_plan, created = NutritionPlan.objects.get_or_create(
+                text=nutrition_plan_text
+            )
+
+            # Link the NutritionPlan to the BMI record and save
+            bmi_record.nutrition_plan = nutrition_plan
+            bmi_record.save()
+
+            # Extract protein data (assuming the text contains it in a structured way)
+            protein_match = re.search(
+                r"(?i)(protein)\s*:\s*(\d+\.?\d*)", nutrition_plan_text
+            )
+            protein_value = protein_match.group(2) if protein_match else "Not specified"
+
+            # Structure the response data
+            response_data = {
+                "bmi_value": bmi_value,
+                "nutrition_plan": nutrition_plan_text,
+                "nutrition_plan_id": nutrition_plan.id,
+                "protein": protein_value,
+            }
+
+            return JsonResponse(response_data)
+
+        except BMICalculator.DoesNotExist:
+            return JsonResponse({"error": "BMI record not found."}, status=404)
+
+    return JsonResponse({"error": "Invalid request method."}, status=400)
