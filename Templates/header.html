@@ -64,7 +64,9 @@
                         <li class="{% if request.path == '/workouts/' %}active{% endif %}">
                             <a href="{% url 'workout_list' %}">Workouts List</a>
                         </li>
-                      
+                        <li class="{% if request.path == '/upload/' %}active{% endif %}">
+                          <a href="{% url 'upload_video' %}">Pose Estimation</a>
+                      </li>
                         <li class="{% if request.path == '/dashboard/' %}active{% endif %}">
                             <a href="{% url 'dashboard' %}">Progress</a>
                         </li>

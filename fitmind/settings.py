@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "forum",
     "AuthApp",
     'Workout',
+    'recognition',
 
 ]
 
