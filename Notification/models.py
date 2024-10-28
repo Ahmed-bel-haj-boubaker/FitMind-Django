@@ -18,3 +18,14 @@ class UserNotification(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.notification.title}"
+    
+
+
+class Feedback(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    notification = models.ForeignKey(Notification, on_delete=models.CASCADE)
+    feedback_text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Feedback by {self.user.username} on {self.notification.title}"

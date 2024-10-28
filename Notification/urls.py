@@ -10,7 +10,9 @@ urlpatterns = [
     path('chat-interface/', TemplateView.as_view(template_name='chat.html'), name='chat_interface'),
     path('generate/', views.ai_generate_description , name="generate"),  
     path('get_ai_description/', views.get_notification_RestApi),
-    path('active-notifications-api/', views.user_active_notifications_restApi)
+    path('active-notifications-api/', views.user_active_notifications_restApi),
+    path('feedback/<int:notification_id>/', views.feedbacklist, name='feedbacklist'),
+    path('addfeedback/<int:notification_id>/', views.add, name='add')
 
 
 ]

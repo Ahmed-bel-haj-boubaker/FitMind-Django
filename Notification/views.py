@@ -1,6 +1,6 @@
 from asyncio import Task
 import random
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -13,12 +13,27 @@ import os
 from background_task import background
 from django.conf import settings
 from django.http import JsonResponse
+from .forms import AddFeedbackForm
 
 # Create your views here.
 # views.py
 
 from django.shortcuts import render, redirect
-from .models import Notification, UserNotification
+from .models import Notification, UserNotification, Feedback
+
+def feedbacklist(request, notification_id):
+    # Retrieve the notification by its ID
+    notification = get_object_or_404(Notification, id=notification_id)
+    
+    # Get all feedback related to this notification
+    feedbacks = Feedback.objects.filter(notification=notification)
+    
+    # Pass the notification and its feedbacks to the template
+    context = {
+        'notification': notification,
+        'feedbacks': feedbacks
+    }
+    return render(request, 'feedback_list.html', context)
 
 def user_notifications(request):
     user_notifications = UserNotification.objects.filter(user=request.user)
@@ -115,7 +130,33 @@ def ai_generate_description(request):
 
 
 
+def add(request, notification_id):
+    # Retrieve the notification by its ID
+    notification = get_object_or_404(Notification, id=notification_id)
+    
+    if request.method == "POST":
+        form = AddFeedbackForm(request.POST)
+        if form.is_valid():
+            print(form)
+            # Create feedback instance but don't save it to the database yet
+            feedback_instance = form.save(commit=False)
+            # Set the user and notification fields
+            feedback_instance.user = request.user
+            feedback_instance.notification = notification
+            # Save the feedback to the database
+            feedback_instance.save()
+            # Redirect to the feedback list or another relevant page after saving
+            return redirect("feedbacklist", notification_id=notification.id)
+    else:
+        # Initialize an empty form for a GET request
+        form = AddFeedbackForm()
 
+    # Render the form template
+    return render(
+        request,
+        "addfeedback.html",
+        {"form": form, "notification": notification},
+    )
 
 
 
@@ -182,5 +223,9 @@ def get_notification_RestApi(request):
     #response = model.generate_content(prompt)
     response = "it work"
     return JsonResponse({"description": response})
+
+
+
+
 
 

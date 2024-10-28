@@ -19,3 +19,5 @@ class NotificationAdmin(admin.ModelAdmin):
             all_users = User.objects.all()
             for user in all_users:
                 UserNotification.objects.create(user=user, notification=obj, is_active=True)
+
+

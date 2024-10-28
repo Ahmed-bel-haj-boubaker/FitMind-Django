@@ -1,0 +1,74 @@
+{% include "header.html" %}
+{% load static %}
+{% block content %}
+
+<section class="breadcrumb-section set-bg" data-setbg="{% static 'img/breadcrumb-bg.jpg' %}">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <div class="breadcrumb-text">
+          <h2>Feedbacks</h2>
+          <div class="bt-option">
+            <a href="{% url 'home' %}">Home</a>
+            <span>Feedbacks</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container my-4">
+  <div class="add-feedback-btn text-right mb-3">
+    <a href="{% url 'add' notification.id %}" class="primary-btn">Add Feedback</a>
+  </div>
+
+  <div class="feedback-list">
+    <h3>Feedback for Notification: {{ notification.title }}</h3>
+    {% if feedbacks %}
+      <ul class="list-group">
+        {% for feedback in feedbacks %}
+          <li class="list-group-item">
+            <div>
+              <strong>{{ feedback.user.username }}</strong> - {{ feedback.feedback_text }}
+              <p class="text-muted mb-0">{{ feedback.created_at|date:"F j, Y, g:i a" }}</p>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No feedback available for this notification.</p>
+    {% endif %}
+  </div>
+</div>
+
+<div class="gettouch-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="gt-text">
+          <i class="fa fa-map-marker"></i>
+          <p>333 Middle Winchendon Rd, Rindge,<br />NH 03461</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="gt-text">
+          <i class="fa fa-mobile"></i>
+          <ul>
+            <li>125-711-811</li>
+            <li>125-668-886</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="gt-text email">
+          <i class="fa fa-envelope"></i>
+          <p>Support.gymcenter@gmail.com</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+{% include "footer.html" %}
