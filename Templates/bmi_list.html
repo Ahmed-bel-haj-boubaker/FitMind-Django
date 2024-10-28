@@ -1,0 +1,210 @@
+{% include "header.html" %} {% load static %} {% block content %}
+<section
+  class="breadcrumb-section set-bg"
+  data-setbg="{% static 'img/breadcrumb-bg.jpg' %}"
+>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <div class="breadcrumb-text">
+          <h2>LIST OF BMI</h2>
+          <div class="bt-option">
+            <a href="./index.html">Home</a>
+            <span>LIST OF BMI</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="bmi-calculator-section spad">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="section-title chart-title">
+          <span>check your body</span>
+          <h2>LIST OF BMI</h2>
+        </div>
+        <div class="chart-table">
+          <table class="bmi-table">
+            <thead>
+              <tr>
+                <th>BMI</th>
+                <th>WEIGHT</th>
+                <th>HEIGHT</th>
+                <th>AGE</th>
+                <th>GENDER</th>
+                <th>BMI STATUS</th>
+                <th>View Details</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for bmi in bmi_records %}
+              <tr>
+                <td class="point">{{ bmi.bmi }}</td>
+                <td>{{ bmi.weight }} kg</td>
+                <td>{{ bmi.height }} cm</td>
+                <td>{{ bmi.age }}</td>
+                <td>{{ bmi.gender }}</td>
+                <td>{{ bmi.category }}</td>
+                <td>
+                  <a href="{% url 'bmi_details' bmi.id %}" class="btn btn-info"
+                    >Details</a
+                  >
+                </td>
+                <td>
+                  <button
+                    class="btn btn-danger"
+                    onclick="confirmDelete({{ bmi.id }})"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="7">No BMI records found.</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          <div class="pagination">
+            <span class="step-links">
+              {% if bmi_records.has_previous %}
+              <a href="?page=1">&laquo; First</a>
+              <a href="?page={{ bmi_records.previous_page_number }}"
+                >Previous</a
+              >
+              {% endif %}
+
+              <span class="current"> Page {{ bmi_records.number }} of </span
+              ><span class="current">
+                {{ bmi_records.paginator.num_pages }}.
+              </span>
+
+              {% if bmi_records.has_next %}
+              <a href="?page={{ bmi_records.next_page_number }}">Next</a>
+              <a href="?page={{ bmi_records.paginator.num_pages }}"
+                >Last &raquo;</a
+              >
+              {% endif %}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="gettouch-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="gt-text">
+          <i class="fa fa-map-marker"></i>
+          <p>333 Middle Winchendon Rd, Rindge,<br />NH 03461</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="gt-text">
+          <i class="fa fa-mobile"></i>
+          <ul>
+            <li>125-711-811</li>
+            <li>125-668-886</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="gt-text email">
+          <i class="fa fa-envelope"></i>
+          <p>Support.gymcenter@gmail.com</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  class="modal fade"
+  id="confirmDeleteModal"
+  tabindex="-1"
+  aria-labelledby="confirmDeleteModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmDeleteModalLabel">
+          Confirm Deletion
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete this BMI record?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <form method="post" id="confirmDeleteForm">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  .bmi-table {
+    width: 100%; /* Full width */
+    border-collapse: collapse; /* Remove spacing between cells */
+    font-size: 1.1em; /* Increase font size */
+  }
+
+  .bmi-table th,
+  .bmi-table td {
+    padding: 15px; /* Add padding */
+    text-align: left; /* Align text to the left */
+    border-bottom: 1px solid #ddd; /* Add border */
+  }
+
+  .bmi-table th {
+    background-color: #f4f4f4; /* Header background color */
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center; /* Center pagination */
+    margin: 20px 0; /* Spacing around pagination */
+  }
+
+  .pagination a {
+    margin: 0 5px; /* Spacing between pagination links */
+    padding: 10px 15px; /* Padding for pagination links */
+    border: 1px solid #ccc; /* Border around links */
+    border-radius: 5px; /* Rounded corners */
+    text-decoration: none; /* Remove underline */
+    color: white;
+  }
+
+  .current {
+    color: white;
+  }
+</style>
+<script>
+  function confirmDelete(bmiId) {
+    const modal = new bootstrap.Modal(
+      document.getElementById("confirmDeleteModal")
+    );
+    document.getElementById(
+      "confirmDeleteForm"
+    ).action = `/bmi-calculator/bmi/delete/${bmiId}/`;
+    modal.show();
+  }
+</script>
+
+{% endblock content %} {% include "footer.html" %}

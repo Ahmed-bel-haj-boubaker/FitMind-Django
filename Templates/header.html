@@ -16,6 +16,10 @@
       rel="stylesheet"
     />
     <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
       href="https://fonts.googleapis.com/css?family=Oswald:300,400,500,600,700&display=swap"
       rel="stylesheet"
     />
@@ -84,6 +88,43 @@
             </div>
           </div>
           <div class="col-lg-6">
+            <style>
+              .nav-menu {
+                position: relative;
+              }
+
+              .submenu {
+                display: none;
+                position: absolute;
+                background-color: black;
+                border: 1px solid #ccc;
+                list-style: none;
+                margin: 0;
+                z-index: 1000;
+                width: 200px;
+                border-radius: 5px;
+                left: 0;
+              }
+
+              .nav-menu li:hover .submenu {
+                display: block;
+              }
+
+              .submenu li {
+                margin: 0;
+              }
+
+              .submenu li a {
+                color: #ffffff;
+                padding: 10px;
+                display: block;
+                transition: background-color 0.3s ease;
+              }
+
+              .submenu li a:hover {
+                background-color: #555;
+              }
+            </style>
             <nav class="nav-menu">
               <ul>
                 <li class="{% if request.path == '/' %}active{% endif %}">
@@ -95,19 +136,55 @@
                 <li class="{% if request.path == '/notifications/user-notifications/' %}active{% endif %}">
                   <a href="{% url 'user_notifications' %}">Notifications</a>
               </li>
+                <li
+                  class="{% if request.path == '/bmi-calculator/' %}active{% endif %}"
+                >
+                  <a href="">BMI</a>
+                  <ul class="dropdown">
+                    <li>
+                      <a href="{% url 'bmi-calculator' %}">BMI Calculator</a>
+                    </li>
+                    <li>
+                      <a href="{% url 'list_bmi' %}">List Of my BMI</a>
+                    </li>
+                  </ul>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="{% if request.path == '/workouts/' or request.path == '/dashboard/' or request.path == '/exercises/' %}active{% endif %}">
+                    <a href="#">Workouts</a>
+                    <ul class="dropdown">
+                        <li class="{% if request.path == '/workouts/' %}active{% endif %}">
+                            <a href="{% url 'workout_list' %}">Workouts List</a>
+                        </li>
+                        <li class="{% if request.path == '/upload/' %}active{% endif %}">
+                          <a href="{% url 'upload_video' %}">Pose Estimation</a>
+                      </li>
+                        <li class="{% if request.path == '/dashboard/' %}active{% endif %}">
+                            <a href="{% url 'dashboard' %}">Progress</a>
+                        </li>
+                        <li class="{% if request.path == '/exercises/' %}active{% endif %}">
+                            <a href="{% url 'exercise_list' %}">Exercises</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="{% if request.path == '/nutrition/' %}active{% endif %}">
+                  <a href="{% url 'analyze_nutrition' %}">Recipes</a>
+              </li>
+            {% endif %}
               </ul>
             </nav>
           </div>
+
           <div class="col-lg-3">
             <div class="top-option">
               <div class="to-search search-switch">
                 <i class="fa fa-search"></i>
               </div>
               <div class="to-social">
-                {% if not request.user.is_authenticated %}
-                  <a class="btn-getstarted" href="/signup">Sign in</a>
+                🙋🏻‍♀️ {% if not request.user.is_authenticated %}
+                <a class="btn-getstarted" href="/signup">Sign in</a>
                 {% else %}
-                  <a class="btn-getstarted" href="/logout">Logout</a>
+                <a class="btn-getstarted" href="/logout">Logout</a>
                 {% endif %}
               </div>
             </div>
@@ -152,3 +229,5 @@
     });
 </script>
     <!-- Header End -->
+  </body>
+</html>

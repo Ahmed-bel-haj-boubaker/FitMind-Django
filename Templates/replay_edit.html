@@ -1,0 +1,22 @@
+{% include "header.html" %}
+<section class="choseus-section spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 style="
+                        color: blanchedalmond;">Edit Replay</h2>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="message" class="form-label" style="
+                        color: blanchedalmond;">Message</label>
+                        <textarea name="message" rows="5" class="form-control">{{ form.instance.message }}</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success">Save Changes</button>
+                    <a href="{% url 'forum_replay' replay.sujet.pk %}" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% include "footer.html" %}
