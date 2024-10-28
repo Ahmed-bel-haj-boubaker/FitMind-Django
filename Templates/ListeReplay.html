@@ -14,7 +14,15 @@
             <div class="container">
                 <div class="row px-3">
                     <div class="col-lg-12" data-aos="fade-down" data-aos-easing="linear">
-                        <h2 class="mb-2">{{sujet.titre}}</h2>
+                        {% if sujet.statut == 'non_resolu' %}
+                                        <h2>
+                                            <a href="{% url 'forum_replay' sujet.id %}">{{ sujet.titre }} 🔓</a>
+                                        </h2>
+                                        {% else %}
+                                        <h2>
+                                            <a href="{% url 'forum_replay'  sujet.id  %}">{{ sujet.titre }} 🔒</a>
+                                        </h2>
+                                        {% endif %}
                         <ul class="breadcrumbs">
                             <li><a href="{% url 'forum_home' %}">Discussions</a></li>
                             ≫
@@ -51,9 +59,15 @@
 
                 </div>
                 <div class="card-body">
-                    <h3>
-                        <a href="#">{{sujet.titre}}</a>
-                    </h3>
+                    {% if sujet.statut == 'non_resolu' %}
+                                        <h3>
+                                            <a href="{% url 'forum_replay' sujet.id %}">{{ sujet.titre }} 🔓</a>
+                                        </h3>
+                                        {% else %}
+                                        <h3>
+                                            <a href="{% url 'forum_replay'  sujet.id  %}">{{ sujet.titre }} 🔒</a>
+                                        </h3>
+                                        {% endif %}
                     <p style="
                         color: blanchedalmond;">
                         {{sujet.description}}
@@ -109,8 +123,7 @@
                             
                             <div class="post-links d-flex mt-1">
                                 
-                                <a href="#" class="p-0 me-3"><span class="bi bi-heart me-1"></span> Like</a>
-                                <a href="#" class="p-0 me-3"><span class="bi bi-reply-all me-1"></span> Reply</a>
+                               
                                 <p class="p-0 me-2"><span class="b bi-clock-history me-1"></span> {{ replay.date_creation|timesince }} ago</p>
                                 
                              
@@ -119,21 +132,28 @@
                         </div>
                     </div>
                     {% endfor %}
-
-                    <form method="POST">
-                        {% csrf_token %}
-                        <div class="col">
-                            <div class="comment-form-2 d-flex flex-column" style="padding-left: 60px; padding-right: 168px;">
-                                <textarea name="message" rows="5" class="form-custom form-custom-textarea" style="background-color: #0d0d0d; color: white;" placeholder="Write your comment..."></textarea>
-                                <div class="form-toolbar form-toolbar-bottom row justify-content-between g-2 p-2">
-                                    <div class="col">
-                                        <button class="btn btn-mint me-2" type="submit">Send</button>
+                    {% if user.is_authenticated %}
+                    {% if sujet.statut == 'non_resolu' %}
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="col">
+                                <div class="comment-form-2 d-flex flex-column" style="padding-left: 60px; padding-right: 168px;">
+                                    <textarea name="message" rows="5" class="form-custom form-custom-textarea" style="background-color: #0d0d0d; color: white;" placeholder="Write your comment..."></textarea>
+                                    <div class="form-toolbar form-toolbar-bottom row justify-content-between g-2 p-2">
+                                        <div class="col">
+                                            <button class="btn btn-mint me-2" type="submit">Send</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
-
+                        </form>
+                    {% else %}
+                        <h2><center>Ce sujet a été resolu, Merci 😃</center></h2>
+                    {% endif %}
+                {% else %}
+                    <h2><center>Vous devez être authentifié pour participer au forum.</center></h2>
+                {% endif %}
+                
                 </div>
 
             </div>
