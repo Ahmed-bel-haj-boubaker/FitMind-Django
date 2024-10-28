@@ -1,0 +1,99 @@
+{% include "header.html" %} {% load static %}
+
+<link
+  href="https://cdn.jsdelivr.net/npm/tailwindcss@^2.0/dist/tailwind.min.css"
+  rel="stylesheet"
+/>
+<section
+  class="breadcrumb-section set-bg"
+  data-setbg="{% static 'img/breadcrumb-bg.jpg' %}"
+>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <div class="breadcrumb-text">
+          <h2>Chek The newst events</h2>
+          <div class="bt-option">
+            <a href="./add">Or Creat youre own event <span> Here</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="class-details-section spad bg-Slate-800 text-Slate-100 p-8">
+  <div class="flex bg-Slate-100">
+    <div class="flex-1 bg-Slate p-4 rounded shadow-md">
+      <div class="ci-pic">
+        {% if event.image %}
+        <img
+          src="{{ event.image.url }}"
+          alt="{{ event.nom }}"
+          class="fixed-size-image"
+        />
+        {% else %}
+        <img src="{% static 'img/image1-2.png' %}" alt="Default image" />
+        {% endif %}
+      </div>    </div>
+      <div class="flex-1 bg-slate-800 p-6 rounded text-center">
+        <h2 class="text-yellow-700 mb-6">{{ event.nom }}</h2>
+        <p class="text-white mb-6"><span> Description:</span> {{ event.description }}</p>
+      
+        <div class="flex flex-col space-y-3 text-white text-left mx-auto max-w-xs">
+          <div>
+            <span class="text-yellow-500 font-semibold">Date:</span> {{ event.date }}
+          </div>
+          <div>
+            <span class="text-orange-500 font-semibold">Location:</span> {{ event.place }}
+          </div>
+          <div>
+            <span class="text-orange-500 font-semibold">Available Space:</span> {{ event.espace }}
+          </div>
+          <div>
+            <span class="text-orange-500 font-semibold">Organized by:</span> {{ event.created_by }}
+          </div>
+        </div>
+      </div>
+      
+      
+      <div class="flex-1 bg-slate-800 p-6 rounded text-center">
+        <h2 class="text-yellow-700 mb-6">IA Generated Section</h2>
+        <p class="text-white mb-6"><span> Tags:</span> {{ event.suggested_tags }}</p>
+      
+        <div class="flex flex-col space-y-3 text-white text-left mx-auto max-w-xs">
+          <div>
+            <span class="text-yellow-500 font-semibold">Quoate:</span> {{ event.quote }}
+          </div>
+          <div>
+            <span class="text-orange-500 font-semibold">Difficulty:</span> {{ event.difficulty_score }}
+          </div>
+         
+          {% if request.user == event.created_by %}
+          <div>
+            <span class="text-orange-500 font-semibold"> Visibilty Check</span> {{ event.visibility_score }}
+          </div>
+          <div class="">
+            <div class="flex justify-center space-x-4">
+              <a
+                href="{% url 'event:edit' event.id %}"
+                class="px-6 py-3 bg-yellow-550 text-white font-medium rounded-lg shadow-md hover:bg-teal-600 transition duration-300"
+              >
+                Update
+              </a>
+              <a
+                href="{% url 'event:delete' event.id %}"
+                class="px-6 py-3 bg-red-500 text-black font-medium rounded-lg shadow-md hover:bg-red-600 transition duration-300"
+              >
+                Delete
+              </a>
+            </div>
+          </div>
+        
+          {% endif %}
+        </div>
+      </div>
+ 
+</section>
+
+
+{% include "footer.html" %}

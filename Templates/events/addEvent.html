@@ -1,0 +1,105 @@
+<!-- Breadcrumb Section Begin -->
+{% include "header.html" %} {% load static %}{% block content %}
+
+<link
+  href="https://cdn.jsdelivr.net/npm/tailwindcss@^2.0/dist/tailwind.min.css"
+  rel="stylesheet"
+/>
+
+<section
+  class="breadcrumb-section set-bg"
+  data-setbg="{% static 'img/breadcrumb-bg.jpg' %}"
+>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <div class="breadcrumb-text">
+          <h2>Create a new Event</h2>
+          <div class="bt-option"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Add Event Section Begin -->
+<section class="bmi-calculator-section py-12 bg-black">
+  <div class="container mx-auto px-4">
+    <div class="flex justify-center">
+      <div class="w-full max-w-lg bg-black shadow-md rounded-lg p-8">
+        <h2 class="text-2xl font-semibold text-center mb-6 text-yellow-700">
+          Event Form
+        </h2>
+
+        <form
+          method="post"
+          action="."
+          enctype="multipart/form-data"
+          class="space-y-6"
+        >
+          {% csrf_token %}
+
+          <!-- Form fields -->
+          <div class="space-y-4">{{ form.as_p }}</div>
+
+          <!-- Error messages -->
+          {% if form.errors or form.non_field_errors %}
+          <div
+            class="mb-3 p-4 bg-red-100 text-red-700 rounded-lg border border-red-200"
+          >
+            <ul class="list-disc pl-5">
+              {% for field in form %} {% for error in field.errors %}
+              <li>{{ error }}</li>
+              {% endfor %} {% endfor %} {% for error in form.non_field_errors %}
+              <li>{{ error }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% endif %}
+
+          <!-- Submit button -->
+          <div class="text-center">
+            <button type="submit" class="primary-btn btn-normal">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Add Event Section End -->
+
+<!-- Get In Touch Section Begin -->
+<div class="gettouch-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="gt-text">
+          <i class="fa fa-map-marker"></i>
+          <p>
+            333 Middle Winchendon Rd, Rindge,<br />
+            NH 03461
+          </p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="gt-text">
+          <i class="fa fa-mobile"></i>
+          <ul>
+            <li>125-711-811</li>
+            <li>125-668-886</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="gt-text email">
+          <i class="fa fa-envelope"></i>
+          <p>Support.gymcenter@gmail.com</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+<!-- Get In Touch Section End -->
+{% include "footer.html" %}

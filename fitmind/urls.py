@@ -17,7 +17,8 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import include, path
-
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -25,4 +26,5 @@ urlpatterns = [
     path("", include("AuthApp.urls")),
     path("forum/", include("forum.urls")),
     path("bmi-calculator/", include("bmicalculator.urls")),
-]
+    path("events/", include(("events.urls", "events"), namespace="event")),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
