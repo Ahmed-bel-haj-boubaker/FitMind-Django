@@ -21,13 +21,14 @@
 </section>
 
 <section class="bmi-calculator-section spad">
-  <div class="container">
+  <div class="container"> 
     <div class="row">
       <div class="col-lg-12">
         <div class="section-title text-center mb-4">
           <span>Check Your Body</span>
           <h2 style="color: black">BMI Information</h2>
-        </div>
+        </div>      
+
         <div class="info-box">
           <ul class="list-unstyled">
             <li><strong>BMI:</strong> {{ bmi_record.bmi }}</li>
@@ -36,70 +37,82 @@
             <li><strong>Age:</strong> {{ bmi_record.age }} years</li>
             <li><strong>Gender:</strong> {{ bmi_record.gender }}</li>
             <li>
-              <strong>Category:</strong>
-              {{ bmi_category }}
+              <strong>Category:</strong> {{ bmi_category }}
             </li>
           </ul>
         </div>
+
         <div class="button-group text-center mt-4">
-          <a href="{% url 'list_bmi' %}" class="btn btn-primary"
-            >Back to List</a
-          >
-          <button
-            type="button"
-            class="btn btn-warning"
-            data-toggle="modal"
-            data-target="#adviceModal"
-            id="getAdviceButton"
-            data-bmi="{{ bmi_record.bmi }}"
-            data-gender="{{ bmi_record.gender }}"
-            data-bmi-category="{% if bmi_record.bmi < 18.5 %}Underweight{% elif 18.5 <= bmi_record.bmi < 25 %}Healthy{% elif 25 <= bmi_record.bmi < 30 %}Overweight{% else %}Obese{% endif %}"
-          >
-            <img
-              height="20px"
-              src="{% static 'img/aiStar.png' %}"
-              alt="AI Icon"
-              style="vertical-align: middle"
-            />
+          <a href="{% url 'list_bmi' %}" class="btn btn-primary">Back to List</a>
+          <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#adviceModal" id="getAdviceButton" data-bmi="{{ bmi_record.bmi }}" data-gender="{{ bmi_record.gender }}" data-bmi-category="{% if bmi_record.bmi < 18.5 %}Underweight{% elif 18.5 <= bmi_record.bmi < 25 %}Healthy{% elif 25 <= bmi_record.bmi < 30 %}Overweight{% else %}Obese{% endif %}">
+            <img height="20px" src="{% static 'img/aiStar.png' %}" alt="AI Icon" style="vertical-align: middle" />
             <span>Get Advice from AI</span>
           </button>
           <button type="button" class="btn btn-success" data-toggle="modal" data-target="#nutritionPlanModal" data-id="{{ bmi_record.id }}">
             Generate Nutrition Plan
-        </button>
-        
-        <!-- Nutrition Plan Modal -->
-        <div class="modal fade" id="nutritionPlanModal" tabindex="-1" role="dialog" aria-labelledby="nutritionPlanModalLabel" aria-hidden="true">
+          </button>
+
+          <!-- Nutrition Plan Modal -->
+          <div class="modal fade" id="nutritionPlanModal" tabindex="-1" role="dialog" aria-labelledby="nutritionPlanModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="nutritionPlanModalLabel">Nutrition Plan</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body" id="nutritionPlanContent">
-                        <p>Your personalized nutrition plan will appear here.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                    </div>
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="nutritionPlanModalLabel">Nutrition Plan</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
                 </div>
+                <div class="modal-body" id="nutritionPlanContent">
+                  <p>Your personalized nutrition plan will appear here.</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+              </div>
             </div>
-        </div>
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-toggle="modal"
-            data-target="#updateBMIModal"
-          >
+          </div>
+
+          <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#updateBMIModal">
             Update BMI
           </button>
- 
+        </div>
+      </div>
+    </div> 
+
+    <div class="row mt-4">
+      <div class="col-lg-12">
+        <div class="card p-4">
+          <h5><strong>Nutritional Plan:</strong></h5>
+          <p id="nutritionPlanText">{{ bmi_record.nutrition_plan.text|truncatewords:30 }}</p>
+          {% if bmi_record.nutrition_plan.text|length > 30 %}
+            <button class="btn btn-link" data-toggle="modal" data-target="#fullNutritionPlanModal">Read More</button>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Full Nutrition Plan Modal -->
+    <div class="modal fade" id="fullNutritionPlanModal" tabindex="-1" role="dialog" aria-labelledby="fullNutritionPlanModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="fullNutritionPlanModalLabel">Full Nutrition Plan</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>{{ bmi_record.nutrition_plan.text }}</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
+
 
  
 <div
