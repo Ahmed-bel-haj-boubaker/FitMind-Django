@@ -18,7 +18,25 @@ class Sujet(models.Model):
 
     def __str__(self):
         return self.titre
+    
+class Reaction(models.Model):
+    LIKE = 'like'
+    DISLIKE = 'dislike'
+    REACTION_CHOICES = [
+        (LIKE, 'Like'),
+        (DISLIKE, 'Dislike')
+    ]
 
+    user = models.ForeignKey(User, on_delete=models.CASCADE , null=True, blank=True)
+    sujet = models.ForeignKey(Sujet, on_delete=models.CASCADE , null=True, blank=True)
+    reaction = models.CharField(max_length=10, choices=REACTION_CHOICES)
+
+    class Meta:
+        unique_together = ('user', 'sujet')  # Un utilisateur ne peut réagir qu'une fois par sujet
+
+    def __str__(self):
+        return f"{self.user.username} - {self.reaction} - {self.sujet.titre}"
+    
 class ReplaySujet(models.Model):
     id = models.AutoField(primary_key=True)  # ID unique
     message = models.TextField()  # Contenu du message
