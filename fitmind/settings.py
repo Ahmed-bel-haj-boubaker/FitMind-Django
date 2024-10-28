@@ -31,8 +31,6 @@ DEBUG = True
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
 
 ALLOWED_HOSTS = []
 
@@ -50,9 +48,7 @@ INSTALLED_APPS = [
     "forum",
     "AuthApp",
     "Notification",
-    'background_task'
-
-
+    'background_task',
     "bmicalculator",
     "Workout",
     "recognition",

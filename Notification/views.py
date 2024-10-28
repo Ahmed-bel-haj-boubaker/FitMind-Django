@@ -184,26 +184,6 @@ def add(request, notification_id):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @background(schedule=60)  # Runs every 60 seconds; adjust as needed
 def scheduled_ai_generate_description():
     genai.configure(api_key=settings.GEMINI_API_KEY)
