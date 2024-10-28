@@ -1,0 +1,28 @@
+{% include "header.html" %}
+{% load static %}
+
+<section class="choseus-section spad">
+
+{% block content %}
+<section class="breadcrumb-section set-bg" data-setbg="{% static 'img/breadcrumb-bg.jpg' %}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb-text">
+                    <h2>ARE YOU SUR YOU WANT TO DELETE THE WORKOUT NAMED {{ workout.name }}</h2>
+                    <div class="bt-option">
+                        <form method="post">
+                            {% csrf_token %}
+                            <button type="submit">Delete</button>
+                            <a href="{% url 'workout_list' %}">Cancel</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}
+</section>
+{% include "footer.html" %}

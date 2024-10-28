@@ -1,0 +1,96 @@
+{% include "header.html" %}
+{% load static %}
+
+<section class="choseus-section spad">
+
+{% block content %}
+ <!-- Breadcrumb Section Begin -->
+ <section class="breadcrumb-section set-bg" data-setbg="{% static 'img/breadcrumb-bg.jpg' %}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb-text">
+                    <h2>Workout detail</h2>
+                    <div class="bt-option">
+                        <a href="/">Home</a>
+                        <a href="/workouts_list">Workouts</a>
+                        <span>INFOS</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<!-- Class Details Section Begin -->
+<section class="class-details-section spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="class-details-text">
+                    {% comment %} <div class="cd-pic">
+                        <img src={% static "img/classes/class-details/class-detailsl.jpg" %} alt="">
+                    </div> {% endcomment %}
+                    <div class="cd-text">
+                        <div class="cd-single-item">
+                            <h3>{{ workout.name }}</h3>
+                            <p>description : {{ workout.description }}</p>
+                            <p>level : {{ workout.level }}</p>
+                        </div>
+                        <div class="cd-single-item">
+                            <h3>List of Exercises:</h3>
+                        </div>
+                    </div>
+                    <div class="cd-trainer">
+                        <div class="row">
+                           <div class="col-md-6">
+                                <div class="cd-trainer-pic">
+                                    <img src={% static "img/classes/class-details/trainer-profile.jpg" %} alt="">
+                                </div>
+                            </div> 
+                            <div class="col-md-6">
+                                {% for exercise in workout.exercises.all %}
+                                <div class="cd-trainer-text">
+                                    <div class="trainer-title">
+                                            <h4 class="title-large">{{ exercise.name }}</h4>
+                                            <p><strong>Description:</strong> {{ exercise.description }}</p>
+                                            <p><strong>Repetitions:</strong> {{ exercise.repetitions }}</p>
+                                            <p><strong>Type:</strong> {{ exercise.category }}</p>
+                                            <p><strong>Duration in minutes:</strong> {{ exercise.duration }}</p>
+                                            <p><strong>Calories Burned:</strong> {{ exercise.calories_burned }}</p>
+                                    </div>
+                                 
+                                </div>
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-8">
+                <div class="sidebar-option">
+                    <div class="so-categories">
+                        <h5 class="title">Exercise Categories</h5>
+                        <ul>
+                            {% for category in categories %}
+                                <li>
+                                    <a href="#">
+                                        {{ category.category }} <span>{{ category.exercise_count }}</span>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</section>
+<!-- Class Details Section End -->
+
+{% endblock content %}
+</section>
+{% include "footer.html" %}

@@ -1,0 +1,150 @@
+{% include "header.html" %}
+
+{% load static %}
+
+
+<section class="choseus-section spad">
+
+{% block content %}
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-section set-bg" data-setbg="{% static 'img/breadcrumb-bg.jpg' %}">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="breadcrumb-text">
+                        <h2>All Workouts</h2>
+                        <div class="bt-option">
+                            <a href="/">Home</a>
+                            <span>List of Workouts</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    <!-- ALL workout Section Begin -->
+    <section class="services-section spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title">
+                        <span>What we do?</span>
+                        <h2>PUSH YOUR LIMITS FORWARD</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                {% for workout in other_user_workouts %}
+                <div class="col-lg-3 col-md-6 p-0">
+                    <div class="ss-pic">
+                        {% if workout.image %}
+                            <img src="{{ workout.image.url }}" alt="{{ workout.name }}">
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 p-0">
+                    <div class="ss-text">
+                        <h4>{{ workout.name }}</h4>
+                        <p>{{ workout.description }}</p>
+                        <a href="{% url 'workout_detail' workout.id %}">Explore</a>
+                        <form action="{% url 'add_to_todo' workout.id %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success">Add to To-Do List</button>
+                        </form>
+                    </div>
+                </div>
+                {% empty %}
+                    <div class="col-lg-12">
+                        <p>No workouts available from other users.</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <!-- All workout Section End -->
+
+    <!-- Banner Section Begin -->
+    <section class="banner-section set-bg" data-setbg="{% static 'img/banner-bg.jpg' %}">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="bs-text service-banner">
+                        <h2>Exercise until the body obeys.</h2>
+                        <div class="bt-tips">Where health, beauty and fitness meet.</div>
+                        <a href="{% url 'workout_create' %}">ADD Workout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Banner Section End -->
+
+    <!-- Your Workouts Section Begin (Displayed only if user is authenticated) -->
+    {% if user.is_authenticated %}
+    <section class="pricing-section service-pricing spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title">
+                        <span>Your Workouts</span>
+                        <h2>Choose your workout plan</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                {% for workout in my_workouts %}
+                    <div class="col-lg-4 col-md-8">
+                        <div class="ps-item"
+                        {% if workout.image %}
+                        style="background-image: url('{{ workout.image.url }}'); background-size: cover; background-position: center; height: 200px;" 
+                    {% endif %}>
+                   {% if workout.image %}
+                       <p>{{ workout.name }}</p>
+                   {% else %}
+                       <p>No Image Available</p>
+                   {% endif %}
+                        >
+                            <h3>{{ workout.name }}</h3>
+                            <p>{{ workout.description }}</p>
+                            <p><strong>Level:</strong> {{ workout.level }}</p>
+                            <ul>
+                                <h5>Exercises:</h5>
+                                {% for workout_exercise in workout.workoutexercise_set.all %}
+                                    <li>{{ workout_exercise.exercise.name }} - Reps: {{ workout_exercise.repetitions }}</li>
+                                {% empty %}
+                                    <li>No exercises added.</li>
+                                {% endfor %}
+                            </ul>
+            
+                            <!-- Boutons côte à côte -->
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <a href="{% url 'workout_detail' workout.id %}" class="btn btn-primary">Explore</a>
+                                <a href="{% url 'workout_update' workout.id %}" class="btn btn-outline-warning ml-2">Edit</a>
+                                <a href="{% url 'workout_delete' workout.id %}" class="btn btn-outline-danger ml-2">Delete</a>
+                                <form action="{% url 'add_to_todo' workout.id %}" method="post" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-success">To Do</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="col-lg-4 col-md-8">
+                        <div class="ps-item">
+                            <h3>No Workouts Available</h3>
+                            <p>You haven't created any workouts yet. Create your first workout!</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+    <!-- Your Workouts Section End -->
+
+{% endblock content %}
+</section>
+
+{% include "footer.html" %}
