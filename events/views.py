@@ -6,7 +6,7 @@ from .forms import NewEventForm, EditEventForm
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseForbidden
 
-API_KEY = "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"
+API_KEY = ""
 API_ENDPOINT = "https://api.openai.com/v1/chat/completions"
 
 
